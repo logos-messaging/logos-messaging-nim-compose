@@ -27,13 +27,14 @@ if [ ! -d "${LETSENCRYPT_PATH}" ]; then
         apk add --no-cache certbot
     fi
 
-    certbot certonly \
-        --non-interactive \
-        --agree-tos \
-        --no-eff-email \
-        --email "${EMAIL}" \
-        --webroot -w "${WEBROOT}" \
-        -d "${DOMAIN}"
+    certbot certonly\
+        --non-interactive\
+        --agree-tos\
+        --no-eff-email\
+        --no-redirect\
+        --email admin@${DOMAIN}\
+        -d ${DOMAIN}\
+        --standalone
 
     echo "[INFO] Certificate issued successfully."
 else
