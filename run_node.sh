@@ -63,10 +63,12 @@ if [ -n "${DOMAIN}" ]; then
     echo "[INFO] Waiting for a valid TLS certificate for ${DOMAIN}..."
 
     while true; do
+        MIN_VALIDITY=3600  # 1 hour
+
         if [ ! -f "${CERT}" ] || [ ! -f "${KEY}" ]; then
             echo "[INFO] Certificate files not found yet. Waiting..."
-        elif ! openssl x509 -checkend 0 -noout -in "${CERT}" >/dev/null 2>&1; then
-            echo "[WARN] Certificate exists but is expired. Waiting for renewal..."
+        elif ! openssl x509 -checkend "${MIN_VALIDITY}" -noout -in "${CERT}" >/dev/null 2>&1; then
+            echo "[WARN] Certificate is invalid, expired, or expiring soon. Waiting..."
         else
             echo "[INFO] Valid TLS certificate detected."
             break
