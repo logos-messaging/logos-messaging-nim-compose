@@ -24,7 +24,7 @@ x-pg-exporter-env: &pg_exp_env
 
 # Services definitions
 services:
-  nwaku:
+  logos-messaging-node:
     image: ${NWAKU_IMAGE:-harbor.status.im/wakuorg/nwaku:v0.37.0-beta}
     restart: on-failure
     ports:
@@ -86,7 +86,7 @@ services:
     restart: on-failure:5
     depends_on:
       - postgres-exporter
-      - nwaku
+      - logos-messaging-node
 
   grafana:
     image: docker.io/grafana/grafana:latest
