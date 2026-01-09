@@ -32,7 +32,6 @@ services:
       - 30304:30304/udp
       - 9005:9005/udp
       - 127.0.0.1:8003:8003
-      - 80:80 #Let's Encrypt
       - 8000:8000/tcp #WSS
       - 127.0.0.1:8645:8645
     logging:
@@ -60,6 +59,7 @@ services:
     command:
       - /opt/run_node.sh
     depends_on:
+      - certbot
       - postgres
 
   # TODO: Commented until ready
@@ -73,6 +73,20 @@ services:
   #  restart: on-failure:5
   #  depends_on:
   #    - nwaku
+
+  certbot:
+    image: certbot/certbot
+    ports:
+      - 80:80 # Let's Encrypt
+    environment:
+      DOMAIN: ${DOMAIN}
+    volumes:
+      - ./run_certbot.sh:/opt/run_certbot.sh:Z
+      - ${CERTS_DIR:-./certs}:/etc/letsencrypt/:Z
+      - ./certbot-challenges:/var/www/certbot
+    entrypoint: sh
+    command:
+      - /opt/run_certbot.sh
 
   prometheus:
     image: docker.io/prom/prometheus:latest
