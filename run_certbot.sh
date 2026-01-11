@@ -1,10 +1,14 @@
 #!/bin/sh
 set -e
 
+if [ -z "$DOMAIN" ]; then
+  echo "DOMAIN not set, skipping certbot"
+  exit 0
+fi
+
 # -------------------------------
 # Configuration
 # -------------------------------
-DOMAIN="${DOMAIN:-changeme.xyz}"        # Replace or set via env
 EMAIL="${EMAIL:-admin@${DOMAIN}}"      # Certbot email
 WEBROOT="${WEBROOT:-/var/www/certbot}" # Path served by HTTP for ACME
 SLEEP_INTERVAL="${SLEEP_INTERVAL:-12h}" # Renewal check interval
