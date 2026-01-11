@@ -52,6 +52,7 @@ echo "[INFO] Starting renewal loop every ${SLEEP_INTERVAL}..."
 while true; do
     echo "[INFO] Checking certificate renewal..."
     certbot renew --standalone --quiet
+    # certbot renew --standalone ## Use this line instead to debug the output
     echo "[INFO] Renewal check complete. Sleeping..."
     sleep "${SLEEP_INTERVAL}"
 done

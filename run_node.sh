@@ -62,19 +62,20 @@ if [ -n "${DOMAIN}" ]; then
     CERT="${LETSENCRYPT_PATH}/fullchain.pem"
     KEY="${LETSENCRYPT_PATH}/privkey.pem"
 
-    echo "[INFO] Waiting for a valid TLS certificate for ${DOMAIN}..."
+    echo "$(date '+%Y-%m-%d %H:%M:%S') [INFO] Waiting for a valid TLS certificate for ${DOMAIN}..."
 
     while true; do
         if [ ! -f "${CERT}" ] || [ ! -f "${KEY}" ]; then
-            echo "[INFO] Certificate files not found yet. Waiting..."
+            echo "$(date '+%Y-%m-%d %H:%M:%S') [INFO] Certificate files not found yet. Waiting..."
         elif ! openssl x509 -checkend 0 -noout -in "${CERT}" >/dev/null 2>&1; then
-            echo "[WARN] Certificate exists but is expired. Waiting for renewal..."
+            echo "$(date '+%Y-%m-%d %H:%M:%S') [WARN] Certificate exists but is expired. Waiting for renewal..."
+            echo "$(date '+%Y-%m-%d %H:%M:%S') [INFO] If that takes more than 15 minutes, please remove --quiet attr in run_certbot.sh so that you can see the reason why renewal is not working."
         else
-            echo "[INFO] Valid TLS certificate detected."
+            echo "$(date '+%Y-%m-%d %H:%M:%S') [INFO] Valid TLS certificate detected."
             break
         fi
 
-        sleep 5
+        sleep 60
     done
 
     WS_SUPPORT="--websocket-support=true"
