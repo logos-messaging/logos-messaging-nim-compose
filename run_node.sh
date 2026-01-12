@@ -54,34 +54,39 @@ if [ -z "${DOMAIN}" ]; then
 fi
 
 if [ -n "${DOMAIN}" ]; then
+    ## A domain has been either set or inferred. Let's try to use it for websocket secure support.
 
-    LETSENCRYPT_PATH=/etc/letsencrypt/live/${DOMAIN}
+    apk add --no-cache openssl
 
-    if ! [ -d "${LETSENCRYPT_PATH}" ]; then
-        apk add --no-cache certbot
+    LETSENCRYPT_PATH="/etc/letsencrypt/live/${DOMAIN}"
+    CERT="${LETSENCRYPT_PATH}/fullchain.pem"
+    KEY="${LETSENCRYPT_PATH}/privkey.pem"
 
-        certbot certonly\
-            --non-interactive\
-            --agree-tos\
-            --no-eff-email\
-            --no-redirect\
-            --email admin@${DOMAIN}\
-            -d ${DOMAIN}\
-            --standalone
-    fi
+    echo "$(date '+%Y-%m-%d %H:%M:%S') [INFO] Waiting for a valid TLS certificate for ${DOMAIN}..."
 
-    if ! [ -e "${LETSENCRYPT_PATH}/privkey.pem" ]; then
-        echo "The certificate does not exist. Proceeding without supporting websocket"
-    else
-        WS_SUPPORT="--websocket-support=true"
-        WSS_SUPPORT="--websocket-secure-support=true"
-        WSS_KEY="--websocket-secure-key-path=${LETSENCRYPT_PATH}/privkey.pem"
-        WSS_CERT="--websocket-secure-cert-path=${LETSENCRYPT_PATH}/fullchain.pem"
-        DNS4_DOMAIN="--dns4-domain-name=${DOMAIN}"
+    while true; do
+        if [ ! -f "${CERT}" ] || [ ! -f "${KEY}" ]; then
+            echo "$(date '+%Y-%m-%d %H:%M:%S') [INFO] Certificate files not found yet. Waiting..."
+        elif ! openssl x509 -checkend 0 -noout -in "${CERT}" >/dev/null 2>&1; then
+            echo "$(date '+%Y-%m-%d %H:%M:%S') [WARN] Certificate exists but is expired. Waiting for renewal..."
+            echo "$(date '+%Y-%m-%d %H:%M:%S') [INFO] If that takes more than 15 minutes, please remove --quiet attr in run_certbot.sh so that you can see the reason why renewal is not working."
+        else
+            echo "$(date '+%Y-%m-%d %H:%M:%S') [INFO] Valid TLS certificate detected."
+            break
+        fi
 
-        DNS_WSS_CMD="${WS_SUPPORT} ${WSS_SUPPORT} ${WSS_CERT} ${WSS_KEY} ${DNS4_DOMAIN}" 
-    fi
+        sleep 60
+    done
+
+    WS_SUPPORT="--websocket-support=true"
+    WSS_SUPPORT="--websocket-secure-support=true"
+    WSS_KEY="--websocket-secure-key-path=${KEY}"
+    WSS_CERT="--websocket-secure-cert-path=${CERT}"
+    DNS4_DOMAIN="--dns4-domain-name=${DOMAIN}"
+
+    DNS_WSS_CMD="${WS_SUPPORT} ${WSS_SUPPORT} ${WSS_CERT} ${WSS_KEY} ${DNS4_DOMAIN}"
 fi
+
 
 if [ -n "${NODEKEY}" ]; then
     NODEKEY=--nodekey=${NODEKEY}
