@@ -15,7 +15,7 @@
 ### Does my node work properly?
 Your node should have at least 40 connected peers, and you should see some traffic in and out, in the Grafana board.
 
-1. Run `docker ps` and check that the `wakuorg/nwaku` container is not continuously restarting
+1. Run `docker ps` and check that the `logos-messaging/logos-messaging-nim` container is not continuously restarting
 2. Use the following commands to check the node better:
     1. `curl -X GET http://localhost:8645/health`
     2. `curl -X GET http://localhost:8645/debug/v1/info`
@@ -50,9 +50,9 @@ http://5.196.26.230:3000/d/yns_4vFVk/nwaku-monitoring?orgId=1&refresh=1m
 
 ### How to migrate my setup to another server?
 
-1. Clone [nwaku-compose](https://github.com/waku-org/nwaku-compose) in the new server.
+1. Clone [logos-messaging-nim-compose](https://github.com/logos-messaging/logos-messaging-nim-compose) in the new server.
 
-2. Move your `keystore` folder (`nwaku-compose/keystore/`) from your current setup to the new server.
+2. Move your `keystore` folder (`logos-messaging-nim-compose/keystore/`) from your current setup to the new server.
 
    That folder was created when you executed `./register_rln.sh`,
 and then, there is no need to run `./register_rln.sh` again.

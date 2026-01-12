@@ -1,6 +1,6 @@
 #!/bin/sh
 
-echo "I am a nwaku node"
+echo "I am a Logos Messaging node"
 
 if [ -n "${ETH_CLIENT_ADDRESS}" ] ; then
     echo "ETH_CLIENT_ADDRESS variable was renamed to RLN_RELAY_ETH_CLIENT_ADDRESS"
@@ -133,7 +133,7 @@ exec /usr/bin/wakunode\
     --rest-admin=true\
     --rest-address=0.0.0.0\
     --rest-port=8645\
-    --rest-allow-origin="waku-org.github.io"\
+    --rest-allow-origin="logos-messaging.github.io"\
     --rest-allow-origin="localhost:*"\
     --nat=extip:"${MY_EXT_IP}"\
     --store=true\

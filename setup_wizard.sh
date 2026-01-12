@@ -46,7 +46,7 @@ fi
 echocol ""
 echocol "╔══════════════════════════════════════════════════════════════════════════════╗"
 echocol "║                                                                              ║"
-echocol "║                        Welcome to nwaku-compose wizard                       ║"
+echocol "║                  Welcome to logos-messaging-nim-compose wizard               ║"
 echocol "║                                                                              ║"
 echocol "╚══════════════════════════════════════════════════════════════════════════════╝"
 echocol ""

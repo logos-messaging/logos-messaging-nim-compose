@@ -1,6 +1,6 @@
-# nwaku-compose
+# logos-messaging-nim-compose
 
-Ready‑to‑use **docker compose** stack for running your own [nwaku](https://github.com/waku-org/nwaku) node.
+Ready‑to‑use **docker compose** stack for running your own [Logos Messaging](https://github.com/logos-messaging/logos-messaging-nim) node.
 
 ## 📝 Prerequisites
 
@@ -35,7 +35,7 @@ Limit disk usage and (optionally) increase shared memory for better performance.
 
 ### 🖥️ 3. Start your node
 
-Start all processes: nwaku node, database and grafana for metrics. 
+Start all processes: Logos Messaging node, database and grafana for metrics.
 
 ```
 docker compose up -d
@@ -58,13 +58,13 @@ The script is experimental, feedback and pull requests are welcome.
 </details>
 
 ### 📌 Note
-RLN membership is your access key to The Waku Network. It is registered on-chain, enabling your nwaku node to send messages in a decentralized and privacy-preserving way while adhering to rate limits. Messages exceeding the rate limit will not be relayed by other peers.
+RLN membership is your access key to The Waku Network. It is registered on-chain, enabling your Logos Messaging node to send messages in a decentralized and privacy-preserving way while adhering to rate limits. Messages exceeding the rate limit will not be relayed by other peers.
 
 If you just want to relay traffic (not publish), you don't need to perform the registration.
 
 -----
 <details>
-<summary>Monitor your nwaku node </summary>
+<summary>Monitor your Logos Messaging node </summary>
 
 - **Metrics (Grafana):**  
   Open [localhost:3000](http://localhost:3000/d/yns_4vFVk/nwaku-monitoring) to view node metrics.  
@@ -72,37 +72,37 @@ If you just want to relay traffic (not publish), you don't need to perform the r
 - **Live logs:**  
   See what’s happening inside your node in real time:  
   ```bash
-  docker compose logs nwaku -f --tail 100
+  docker compose logs logos-messaging-nim -f --tail 100
   ```
 
 - **Use the REST API**
 
-    Your nwaku node exposes a [REST API](https://waku-org.github.io/waku-rest-api/) to interact with it.
+    Your Logos Messaging node exposes a [REST API](https://logos-messaging.github.io/logos-messaging-rest-api/) to interact with it.
     ```
-    # get nwaku version
+    # get Logos Messaging version
     curl http://127.0.0.1:8645/debug/v1/version
-    # get nwaku info
+    # get Logos Messaging info
     curl http://127.0.0.1:8645/debug/v1/info
     ```
 
-For advanced documentation, refer to [ADVANCED.md](https://waku-org.github.io/waku-rest-api/).
+For advanced documentation, refer to [ADVANCED.md](https://logos-messaging.github.io/logos-messaging-rest-api/).
 
 </details>
 
 <details>
 <summary>How to update to latest version</summary>
 
-We regularly announce new available versions in our [Discord](https://discord.waku.org/) server.
+We regularly announce new available versions in our [Discord](https://discord.gg/XDJsVn2e) server.
 
 ### From `v0.35.1` or older
 
-Please review the latest https://github.com/waku-org/nwaku-compose/blob/master/.env.example env var template file and update your .env accordingly.
+Please review the latest https://github.com/logos-messaging/logos-messaging-nim-compose/blob/master/.env.example env var template file and update your .env accordingly.
 
 Also, move your Sepolia RPC client (e.g., Infura) to a Linea Sepolia RPC client.
 
 You will need to delete the `keystore` folder and register your membership again before using the new version by running the following commands:
 
-1. `cd nwaku-compose` ( go into the root's repository folder )
+1. `cd logos-messaging-nim-compose` ( go into the root's repository folder )
 2. `docker-compose down`
 3. `sudo rm -r keystore`
 4. `git pull origin master`
@@ -112,7 +112,7 @@ You will need to delete the `keystore` folder and register your membership again
 ### From `v0.36.0` or newer
 
 Updating the node is as simple as running the following:
-1. `cd nwaku-compose` ( go into the root's repository folder )
+1. `cd logos-messaging-nim-compose` ( go into the root's repository folder )
 2. `docker-compose down`
 3. `git pull origin master`
 4. `docker-compose up -d`
